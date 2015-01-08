@@ -77,7 +77,7 @@ private:
 
     int updateButtonGeometry(QToolButton *button, int x, int y);
     void createShapeItem(const QPainterPath &path, const QString &toolTip,
-                         const QPoint &pos, const QColor &color);
+                         const QPoint &pos, const QColor &color, const QBrush &brush);
     int itemAt(const QPoint &pos);
     void moveItemTo(const QPoint &pos);
     QPoint initialItemPosition(const QPainterPath &path);

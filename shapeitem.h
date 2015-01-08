@@ -52,17 +52,20 @@ public:
     void setToolTip(const QString &toolTip);
     void setPosition(const QPoint &position);
     void setColor(const QColor &color);
+    void setBrush(const QBrush &color);
 
     QPainterPath path() const;
     QPoint position() const;
     QColor color() const;
     QString toolTip() const;
-
+    QBrush brush() const;
 private:
     QPainterPath myPath;
     QPoint myPosition;
     QColor myColor;
     QString myToolTip;
+    QBrush myBrush;
+
 };
 
 #endif
