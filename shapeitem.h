@@ -41,31 +41,49 @@
 #ifndef SHAPEITEM_H
 #define SHAPEITEM_H
 
+#include "utils.hpp"
+
 #include <QColor>
 #include <QPainterPath>
 #include <QPoint>
+#include <QPen>
+
+
 
 class ShapeItem
 {
 public:
+
+    ShapeItem();
+
     void setPath(const QPainterPath &path);
     void setToolTip(const QString &toolTip);
     void setPosition(const QPoint &position);
     void setColor(const QColor &color);
     void setBrush(const QBrush &color);
+    void setPen(const QPen &pen);
+    void setType(const FigureType type);
+    void itemClicked();
 
     QPainterPath path() const;
     QPoint position() const;
     QColor color() const;
     QString toolTip() const;
     QBrush brush() const;
+    QPen pen() const;
+    FigureType type() const;
+    size_t clickNumber() const;
+
 private:
+
+    size_t myClickNumber;
     QPainterPath myPath;
     QPoint myPosition;
     QColor myColor;
     QString myToolTip;
     QBrush myBrush;
-
+    QPen myPen;
+    FigureType myType;
 };
 
 #endif

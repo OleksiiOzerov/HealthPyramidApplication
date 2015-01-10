@@ -7,5 +7,11 @@
         <file>images/qt-logo.png</file>
         <file>images/food-pyramid1.jpg</file>
         <file>images/food-pyramid1.png</file>
+        <file>images/1.png</file>
+        <file>images/2.png</file>
+        <file>images/3.png</file>
+        <file>images/4.png</file>
+        <file>images/5.png</file>
+        <file>images/6.png</file>
     </qresource>
 </RCC>

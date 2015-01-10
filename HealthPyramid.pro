@@ -3,7 +3,8 @@ QT += widgets
 CONFIG += c++11
 
 HEADERS       = shapeitem.h \
-                sortingbox.h
+                sortingbox.h \
+    utils.hpp
 SOURCES       = main.cpp \
                 shapeitem.cpp \
                 sortingbox.cpp
