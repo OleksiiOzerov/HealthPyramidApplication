@@ -41,9 +41,9 @@
 #ifndef SORTINGBOX_H
 #define SORTINGBOX_H
 
-#include <QWidget>
-
 #include "shapeitem.h"
+
+#include <QWidget>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -59,12 +59,17 @@ public:
     SortingBox();
 
 protected:
+    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
     bool event(QEvent *event) Q_DECL_OVERRIDE;
     void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
+    void readSettings();
+    void writeSettings();
+
     void initializeColorCollection();
     void initializePressCountCollection();
 
@@ -109,6 +114,8 @@ private:
 
     QList<size_t> m_GreenColorLevelCollection;
     QList<size_t> m_PressFigureCountCollection;
+
+    QString m_DescriptionText;
 
     ShapeItem *itemInMotion;
 };

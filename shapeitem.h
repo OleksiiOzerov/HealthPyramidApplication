@@ -48,8 +48,6 @@
 #include <QPoint>
 #include <QPen>
 
-
-
 class ShapeItem
 {
 public:

@@ -4,7 +4,7 @@ CONFIG += c++11
 
 HEADERS       = shapeitem.h \
                 sortingbox.h \
-    utils.hpp
+                utils.hpp
 SOURCES       = main.cpp \
                 shapeitem.cpp \
                 sortingbox.cpp

@@ -2,6 +2,7 @@
 #include "sortingbox.h"
 #include "utils.hpp"
 
+//#include <QDebug>
 #include <QtWidgets>
 #include <stdlib.h>
 
@@ -12,12 +13,12 @@ SortingBox::SortingBox() : m_FoodPiramidFigureShift(0,0), m_InitialColor(255,0,0
     initializeColorCollection();
     initializePressCountCollection();
 
-    setWindowTitle(tr("Food Pyramid"));
-    resize(700, 135 + 138 + 151 + 177);
+    setWindowTitle(tr("Health Pyramid"));
+    readSettings();
 
     setMouseTracking(true);
 
-    setBackgroundRole(QPalette::Base);
+    setBackgroundRole(QPalette::Light);
 
     itemInMotion = 0;
 
@@ -30,7 +31,6 @@ SortingBox::SortingBox() : m_FoodPiramidFigureShift(0,0), m_InitialColor(255,0,0
     createThirdLevelRightFigure();
 
     createForthLevelLeftFigure();
-
 
     m_Background.moveTo(0  , 0);
     m_Background.lineTo(700, 0);
@@ -54,36 +54,59 @@ SortingBox::SortingBox() : m_FoodPiramidFigureShift(0,0), m_InitialColor(255,0,0
 
     createShapeItem(m_SecondLevelRightFigure,
                     tr("Meat, Poultry, Fish, Dry Beans, Eggs, & Nuts Group"),
-                    m_FoodPiramidFigureShift + QPoint(362, 135),
+                    m_FoodPiramidFigureShift + QPoint(363, 135),
                     m_InitialColor,
                     QBrush(QPixmap(":/images/3.png")),
                     FigureType::thirdFigure);
 
     createShapeItem(m_ThirdLevelLeftFigure,
                     tr("Vegetable Group"),
-                    m_FoodPiramidFigureShift + QPoint(138, 138 + 135),
+                    m_FoodPiramidFigureShift + QPoint(137, 138 + 135),
                     m_InitialColor,
                     QBrush(QPixmap(":/images/4.png")),
                     FigureType::fourthFigure);
 
     createShapeItem(m_ThirdLevelRightFigure,
                     tr("Fruit Group"),
-                    m_FoodPiramidFigureShift + QPoint(362, 138 + 135),
+                    m_FoodPiramidFigureShift + QPoint(367, 138 + 135),
                     m_InitialColor,
                     QBrush(QPixmap(":/images/5.png")),
                     FigureType::fivthFigure);
 
     createShapeItem(m_ForthLevelFigure,
                     tr("Bread, Cereal, Rise, & Pasta Group"),
-                    m_FoodPiramidFigureShift + QPoint(20, 151 + 138 + 135),
+                    m_FoodPiramidFigureShift + QPoint(30, 151 + 138 + 135),
                     m_InitialColor,
                     QBrush(QPixmap(":/images/6.png")),
                     FigureType::sixthFigure);
 }
 
+void SortingBox::readSettings()
+{
+    QSettings settings("HealthOrganization", "HealthPyramid");
+    QPoint pos = settings.value("pos", QPoint(100, 100)).toPoint();
+    QSize size = settings.value("size", QSize(700, 600)).toSize();
+    resize(size);
+    move(pos);
+}
+
+void SortingBox::writeSettings()
+{
+    QSettings settings("HealthOrganization", "HealthPyramid");
+    settings.setValue("pos", pos());
+    settings.setValue("size", size());
+}
+
+void SortingBox::closeEvent(QCloseEvent *event)
+{
+    writeSettings();
+    event->accept();
+}
+
 bool SortingBox::event(QEvent *event)
 {
-    if (event->type() == QEvent::ToolTip) {
+    if (event->type() == QEvent::ToolTip)
+    {
         QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
         int index = itemAt(helpEvent->pos());
         if (index != -1) {
@@ -111,32 +134,30 @@ void SortingBox::paintEvent(QPaintEvent * /* event */)
     font.setStyleHint(QFont::Courier, QFont::PreferAntialias);
     font.setPointSize(30);
 
-   //painter.translate(QPoint(0, 0));
     painter.setPen(QPen(Qt::NoPen));
     painter.setBrush(QColor(255, 255, 255));
 
     painter.drawPath(m_Background);
-
-    //painter.translate(QPoint(700, 135 + 138 + 151 + 177));
+    painter.setPen(QPen(Qt::SolidLine));
+    painter.drawText(10, 10, m_DescriptionText);
 
     foreach (ShapeItem shapeItem, shapeItems)
     {
         painter.translate(shapeItem.position());
 
         painter.setBrush(shapeItem.brush());
-        painter.setPen(QPen(QColor(0, 0, 0)));
+        painter.setPen(QPen(Qt::NoPen));
         painter.drawPath(shapeItem.path());
 
         painter.setFont(font);
         painter.setPen(shapeItem.pen());
-        painter.drawText(40, 40, QString::number(shapeItem.clickNumber()));
+        painter.drawText(70, 50, QString::number(shapeItem.clickNumber()));
         painter.translate(-shapeItem.position());
     }
 }
 
 void SortingBox::mousePressEvent(QMouseEvent *event)
 {
-
     if (event->button() == Qt::LeftButton)
     {
         int index = itemAt(event->pos());
@@ -166,6 +187,23 @@ void SortingBox::mousePressEvent(QMouseEvent *event)
 
             update();
         }
+    }
+}
+
+void SortingBox::mouseMoveEvent(QMouseEvent *event)
+{
+//    QDebug deb = qDebug();
+//    deb <<  "pos " << event->pos().x() << " " << event->pos().y();
+
+    int index = itemAt(event->pos());
+
+    if (index != -1)
+    {
+        itemInMotion = &shapeItems[index];
+
+        m_DescriptionText = itemInMotion->toolTip();
+
+        update();
     }
 }
 
@@ -233,8 +271,8 @@ void SortingBox::createThirdLevelRightFigure()
 {
     m_ThirdLevelRightFigure.moveTo(0, 0);
     m_ThirdLevelRightFigure.lineTo(150, 0);
-    m_ThirdLevelRightFigure.lineTo(235, 100);
-    m_ThirdLevelRightFigure.lineTo(235 ,151);
+    m_ThirdLevelRightFigure.lineTo(230, 100);
+    m_ThirdLevelRightFigure.lineTo(230 ,151);
     m_ThirdLevelRightFigure.lineTo(0, 151);
     m_ThirdLevelRightFigure.lineTo(0, 0);
 }
@@ -243,9 +281,9 @@ void SortingBox::createForthLevelLeftFigure()
 {
     m_ForthLevelFigure.moveTo(95 , 0);
     m_ForthLevelFigure.lineTo(575, 0);
-    m_ForthLevelFigure.lineTo(671, 148);
-    m_ForthLevelFigure.lineTo(671, 177);
-    m_ForthLevelFigure.lineTo(0  , 177);
+    m_ForthLevelFigure.lineTo(665, 148);
+    m_ForthLevelFigure.lineTo(665, 170);
+    m_ForthLevelFigure.lineTo(0  , 170);
     m_ForthLevelFigure.lineTo(0  , 144);
     m_ForthLevelFigure.lineTo(95 , 0);
 }
@@ -292,7 +330,6 @@ void SortingBox::createShapeItem(const QPainterPath &path,
     shapeItem.setBrush(brush);
     shapeItem.setType(type);
     shapeItems.append(shapeItem);
-    update();
 }
 
 QPoint SortingBox::initialItemPosition(const QPainterPath &path)
