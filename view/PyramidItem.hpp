@@ -38,86 +38,47 @@
 **
 ****************************************************************************/
 
-#ifndef SORTINGBOX_H
-#define SORTINGBOX_H
+#ifndef PYRAMIDITEM_H
+#define PYRAMIDITEM_H
 
-#include "shapeitem.h"
+#include <QColor>
+#include <QPainterPath>
+#include <QPoint>
+#include <QPen>
 
-#include <QWidget>
-
-QT_BEGIN_NAMESPACE
-class QAction;
-class QPoint;
-class QToolButton;
-QT_END_NAMESPACE
-
-class SortingBox : public QWidget
+class PyramidItem
 {
-    Q_OBJECT
-
 public:
-    SortingBox();
+    explicit PyramidItem(size_t GreenColorClickNumber);
 
-protected:
-    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
-    bool event(QEvent *event) Q_DECL_OVERRIDE;
-    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void setPath(const QPainterPath &path);
+    void setToolTip(const QString &toolTip);
+    void setPosition(const QPoint &position);
+    void setColor(const QColor &color);
+    void setBrush(const QBrush &color);
+    void setPen(const QPen &pen);
+    void itemClicked();
+
+    QPainterPath path() const;
+    QPoint position() const;
+    QColor color() const;
+    QString toolTip() const;
+    QBrush brush() const;
+    QPen pen() const;
+    size_t clickNumber() const;
 
 private:
-    void readSettings();
-    void writeSettings();
+    size_t m_ClickNumber;
+    size_t m_GreenColorClickNumber;
 
-    void initializeColorCollection();
-    void initializePressCountCollection();
+    QString m_ToolTip;
 
-    void createFirstLevelFigure();
-    void createSecondLevelLeftFigure();
-    void createSecondLevelRightFigure();
-    void createThirdLevelLeftFigure();
-    void createThirdLevelRightFigure();
-    void createForthLevelLeftFigure();
+    QPoint m_Position;
+    QPainterPath m_Path;
 
-    int updateButtonGeometry(QToolButton *button, int x, int y);
-    void createShapeItem(const QPainterPath &path, const QString &toolTip,
-                         const QPoint &pos, const QColor &color, const QBrush &brush,
-                         FigureType type);
-
-    int itemAt(const QPoint &pos);
-    void moveItemTo(const QPoint &pos);
-
-    QPoint initialItemPosition(const QPainterPath &path);
-    QPoint randomItemPosition();
-    QColor initialItemColor();
-    QColor randomItemColor();
-
-    QPoint m_FoodPiramidFigureShift;
-    const QColor m_InitialColor;
-
-    QList<ShapeItem> shapeItems;
-
-    QPainterPath m_Background;
-
-    QPainterPath m_FirstLevelFigure;
-
-    QPainterPath m_SecondLevelLeftFigure;
-    QPainterPath m_SecondLevelRightFigure;
-
-    QPainterPath m_ThirdLevelLeftFigure;
-    QPainterPath m_ThirdLevelRightFigure;
-
-    QPainterPath m_ForthLevelFigure;
-
-    QPoint previousPosition;
-
-    QList<size_t> m_GreenColorLevelCollection;
-    QList<size_t> m_PressFigureCountCollection;
-
-    QString m_DescriptionText;
-
-    ShapeItem *itemInMotion;
+    QColor m_Color;
+    QPen m_Pen;
+    QBrush m_Brush;
 };
 
 #endif

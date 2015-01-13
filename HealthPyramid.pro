@@ -2,12 +2,18 @@ QT += widgets
 
 CONFIG += c++11
 
-HEADERS       = shapeitem.h \
-                sortingbox.h \
-                utils.hpp
+HEADERS       = \
+    view/HealthPyramidMainWindow.hpp \
+    view/HealthPyramidView.hpp \
+    view/PyramidItem.hpp \
+    view/PyramidItemPathFactory.hpp
+
 SOURCES       = main.cpp \
-                shapeitem.cpp \
-                sortingbox.cpp
+                view/PyramidItem.cpp \
+                view/HealthPyramidView.cpp \
+    view/HealthPyramidMainWindow.cpp \
+    view/PyramidItemPathFactory.cpp
+
 RESOURCES     = healthpyramid.qrc
 
 TEMPLATE    = app
