@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class HealthPyramidView;
+
 class HealthPyramidMainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -19,6 +21,9 @@ public slots:
 private:
     void readSettings();
     void writeSettings();
+
+    HealthPyramidView *m_HealthPyramidView;
+    bool m_WriteSession;
 
 };
 

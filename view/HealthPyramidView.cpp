@@ -20,6 +20,30 @@ HealthPyramidView::HealthPyramidView(QWidget* parent) : QWidget(parent),
     createAllShapeItems();
 }
 
+void HealthPyramidView::setPreviousSession(QList<int> previousSession)
+{
+    for (int i = 0; i < previousSession.size(); ++i)
+    {
+        for(int j = 0; j < previousSession[i]; ++j)
+        {
+            shapeItems[i].itemClicked();
+        }
+    }
+}
+
+QList<int> HealthPyramidView::getCurrentSession()
+{
+    QList<int> currentSession;
+
+    for(int i = 0; i < shapeItems.size(); ++i)
+    {
+        currentSession.push_back(shapeItems[i].clickNumber());
+    }
+
+    return currentSession;
+
+}
+
 bool HealthPyramidView::event(QEvent *event)
 {
     if (event->type() == QEvent::ToolTip)

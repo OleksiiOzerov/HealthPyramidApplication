@@ -1,4 +1,4 @@
-QT += widgets
+QT += widgets sql
 
 CONFIG += c++11
 
@@ -6,13 +6,15 @@ HEADERS       = \
     view/HealthPyramidMainWindow.hpp \
     view/HealthPyramidView.hpp \
     view/PyramidItem.hpp \
-    view/PyramidItemPathFactory.hpp
+    view/PyramidItemPathFactory.hpp \
+    model/DatabaseHandler.hpp
 
 SOURCES       = main.cpp \
                 view/PyramidItem.cpp \
                 view/HealthPyramidView.cpp \
     view/HealthPyramidMainWindow.cpp \
-    view/PyramidItemPathFactory.cpp
+    view/PyramidItemPathFactory.cpp \
+    model/DatabaseHandler.cpp
 
 RESOURCES     = healthpyramid.qrc
 

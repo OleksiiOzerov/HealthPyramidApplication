@@ -5,6 +5,7 @@
 #include "PyramidItemPathFactory.hpp"
 
 #include <QWidget>
+#include <QList>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -18,6 +19,9 @@ class HealthPyramidView : public QWidget
 
 public:
     explicit HealthPyramidView(QWidget* parent = 0);
+
+    void setPreviousSession(QList<int> previousSession);
+    QList<int> getCurrentSession();
 
 protected:
     bool event(QEvent *event) Q_DECL_OVERRIDE;
